@@ -3,6 +3,7 @@
 **Smart space-habitat supply-intake and survival decision system**
 
 > Team: **Triple C** · LSU Hackathon 2026 · [William Dang](https://github.com/WilliamD488), [Phuong Tran](https://github.com/phuonqi), [Cohen Cunningham](https://github.com/bluefancystar), [Mai Tran](https://github.com/maiviettantran), [Muntrail Jones](https://github.com/MJon322)
+> 
 > *"Create a system that helps humans sustain life in extreme off-Earth environments."*
 
 ## The problem
