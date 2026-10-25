@@ -175,3 +175,8 @@ Per the hackathon AI policy: parts of this codebase were **generated with AI ass
 
 - Project structure follows the default Vite + React setup (https://vite.dev).
 - Tailwind CSS v4 Vite plugin setup from the Tailwind docs (https://tailwindcss.com/docs/installation/using-vite).
+- `https://lastminuteengineers.com/esp32-pinout-reference/`
+- `https://www.youtube.com/watch?v=KGwtit2bFyo`
+- `https://docs.sunfounder.com/projects/umsk/en/latest/03_esp32/esp32_lesson11_photoresistor.html`
+- `https://www.youtube.com/watch?v=IPrEjQn_cTM`
+- `https://lastminuteengineers.com/esp32-servo-motor-tutorial/`
