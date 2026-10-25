@@ -168,6 +168,8 @@ Per the hackathon AI policy: parts of this codebase were **generated with AI ass
 
 - `frontend/public/earthrise.jpg`: "Earthrise" (Apollo 8, AS08-14-2383), Image Credit: NASA/William Anders. A real photograph from NASA, not AI-generated. Source: https://www.nasa.gov/?p=582699
 - The logo, icons (Lucide) and the space background are drawn in code.
+- `https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3dsZDg1ZjJ3a3R0ZGo3aHZhcTg3N2RlazRzYzlpMW11NDA1bDlsbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dy54LwFL5yNInwMSye/giphy.gif`
+- `https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDdsYWhtamtyZTB5MzdicGx2cGx4Y29pcW41NTltdmM5bTNiZzV4ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/W0DdAs9ruu70E9Yqt2/giphy.gif`
 
 ## Boilerplate sources
 
