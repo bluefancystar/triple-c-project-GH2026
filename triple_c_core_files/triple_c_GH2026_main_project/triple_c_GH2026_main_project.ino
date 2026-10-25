@@ -68,6 +68,11 @@ double calculateDistance(const int TRIG_PIN, const int ECHO_PIN)
 //calculates volume
 double calculateVolume()
 {
+  if (digitalRead(VOLUME_TOGGLE) == LOW)
+  { 
+    Serial.print("NV");
+    return 0;
+  }
   for (int i = 0; i < 3; i++)
   {
     for (int j = 0; j < 2; j++)
@@ -100,7 +105,7 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   pinMode(TH_TOGGLE, INPUT);
   pinMode(LIGHT_TOGGLE, INPUT);
-  pinMode(VOLUME_TOGGLE, INPUT);
+  pinMode(VOLUME_TOGGLE, INPUT_PULLDOWN);
 
   Serial.begin(115200);
   th_sensor.begin();
