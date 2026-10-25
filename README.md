@@ -2,10 +2,8 @@
 
 **Smart space-habitat supply-intake and survival decision system**
 
-> Team: **Triple C** · LSU Hackathon 2026 · [William Dang] (https://github.com/WilliamD488), [Phuong Tran] (https://github.com/phuonqi), [Cohen Cunningham] (https://github.com/bluefancystar), [Mai Tran] (https://github.com/maiviettantran), [Muntrail Jones] (https://github.com/MJon322)
+> Team: **Triple C** · LSU Hackathon 2026 · [William Dang](https://github.com/WilliamD488), [Phuong Tran](https://github.com/phuonqi), [Cohen Cunningham](https://github.com/bluefancystar), [Mai Tran](https://github.com/maiviettantran), [Muntrail Jones](https://github.com/MJon322)
 > *"Create a system that helps humans sustain life in extreme off-Earth environments."*
-
-> ⚠️ Before submitting: reorganize these sections to match the official README template linked in the submission rules.
 
 ## The problem
 
@@ -160,16 +158,6 @@ Example telemetry:
 - Per-crew usage (food ≈ 1.8 kg, drinking water ≈ 2.5 L, oxygen ≈ 0.84 kg per day) is rounded from NASA's *Life Support Baseline Values and Assumptions Document (BVAD)*.
 - Energy use (20 kWh/day) and action effects (greenhouse yield, repair savings) are prototype assumptions.
 - `expected_weight_g` is the weight of the physical demo prop; `payload_amount` is the real-scale cargo it represents.
-
-## Team
-
-| Name | Role |
-|---|---|
-| [Name] | Electrical — ESP32, sensors, LEDs, Wi-Fi |
-| [Name] | Computer — React dashboard |
-| [Name] | Computer — backend / API, ESP32 integration |
-| [Name] | Computer — testing, deployment |
-| [Name] | Industrial — decision rules, inventory & survival model, bottleneck analysis, recommendations, pitch |
 
 ## AI usage disclosure
 
