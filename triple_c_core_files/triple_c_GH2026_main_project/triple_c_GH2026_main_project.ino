@@ -1,36 +1,37 @@
-#include <ESP32Servo.h>
 #include <DHT.h>
 #include <Wire.h>
 #include <SPI.h>
 
 long duration;
-double distance_b = 0;
-double distance_f = 0;
-double distance_traveled, sum;
+double distance, distance_traveled, sum;
 int count = 0;
-double average_b, average_f;
+double average = 0;
 double left_dist = 0;
 double right_dist = 0;
-double temp, humid, light_level;
+double dimensions[3];
+double volume, temp, humid, light_level;
 
-const int SERVO_PIN = 22;
+const int TH_TOGGLE = 27;
+const int LIGHT_TOGGLE = 26;
+const int VOLUME_TOGGLE = 25;
 const int TRIG_PIN1 = 21;
 const int ECHO_PIN1 = 15;
 const int TRIG_PIN2 = 19;
 const int ECHO_PIN2 = 4;
-const int BUTTON_PIN = 18;
 const int LIGHT_PIN = 13;
+const int LED_PIN = 16;
 
-Servo servo;
+//declares thermal/humidity sensor object
 DHT th_sensor(23, DHT11); 
 
+//function to calculate distance from object (averages 5 trials to reduce error)
 double calculateDistance(const int TRIG_PIN, const int ECHO_PIN)
 {
   for (int j = 0; j < 5; j++)
   {
-    if (distance_b != 0)
+    if (distance != 0)
     {
-      sum += distance_b;
+      sum += distance;
       count++;
     }
     digitalWrite(TRIG_PIN, LOW);
@@ -44,127 +45,107 @@ double calculateDistance(const int TRIG_PIN, const int ECHO_PIN)
 
     duration = pulseIn(ECHO_PIN, HIGH);
 
-    distance_b = duration * 0.034 / 2;
+    distance = duration * 0.034 / 2;
 
-    Serial.print("Distance_b: ");
-    Serial.println(distance_b);
+    Serial.print("Distance: ");
+    Serial.println(distance);
     delay(50);
   }
 
-  distance_b = 0;
+  distance = 0;
 
   if (count != 0)
   {
-    average_b = sum / count;
+    average = sum / count;
     sum = 0;
     count = 0;
-    Serial.print("Average Distance_b: ");
-    Serial.println(average_b);
+    Serial.print("Average Distance: ");
+    Serial.println(average);
   }
-    
-  servo.write(0);
-  for (int i = 0; i <= 180; i += 45)
-  {
-    servo.write(i);
-    delay(5);
-  }
-  delay(750);
-
-  for (int j = 0; j < 5; j++)
-  {
-    if (distance_f != 0)
-    {
-      sum += distance_f;
-      count++;
-    }
-    digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2);
-
-    digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG_PIN, LOW);
-
-    delayMicroseconds(10);
-
-    duration = pulseIn(ECHO_PIN, HIGH);
-
-    distance_f = duration * 0.034 / 2;
-
-    Serial.print("Distance_f: ");
-    Serial.println(distance_f);
-    delay(50);
-  }
-
-  distance_f = 0;
-
-  if (count != 0)
-  {
-    average_f = sum / count;
-    sum = 0;
-    count = 0;
-    Serial.print("Average Distance_f: ");
-    Serial.println(average_f);
-  }
-
-  distance_traveled = distance_b - distance_f;
-  Serial.print("Distance travled: ");
-  Serial.println(distance_traveled);
-    
-  servo.write(0);
-  return distance_traveled;
+  return average;
 }
 
-//void calculateSize()
-//{
-//  left_dist = calculateDistance(TRIG_PIN1, ECHO_PIN1);
-//  right_dist = calculateDistance(TRIG_PIN2, ECHO_PIN2);
-//}
+//calculates volume
+double calculateVolume()
+{
+  for (int i = 0; i < 3; i++)
+  {
+    for (int j = 0; j < 2; j++)
+    {
+      digitalWrite(LED_PIN, HIGH);
+      delay(200);
+      digitalWrite(LED_PIN, LOW);
+      delay(200);
+    }
+    digitalWrite(LED_PIN, HIGH);
+    delay(1500);
+    left_dist = calculateDistance(TRIG_PIN1, ECHO_PIN1);
+    right_dist = 10 - calculateDistance(TRIG_PIN2, ECHO_PIN2);
+    dimensions[i] = abs(right_dist - left_dist);
+    digitalWrite(LED_PIN, LOW);
+    delay(700);
+  }
+  volume = dimensions[0] * dimensions[1] * dimensions[2];
+  Serial.print("Volume: ");
+  return volume;
+}
 
 void setup()
 {
-  ESP32PWM::allocateTimer(0);
-  ESP32PWM::allocateTimer(1);
-  ESP32PWM::allocateTimer(2);
-  ESP32PWM::allocateTimer(3);
-  servo.setPeriodHertz(50);
-  servo.attach(SERVO_PIN, 500, 2400);
-
   pinMode(TRIG_PIN1, OUTPUT);
   pinMode(ECHO_PIN1, INPUT);
   pinMode(TRIG_PIN2, OUTPUT);
   pinMode(ECHO_PIN2, INPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   pinMode(LIGHT_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(TH_TOGGLE, INPUT);
+  pinMode(LIGHT_TOGGLE, INPUT);
+  pinMode(VOLUME_TOGGLE, INPUT);
 
   Serial.begin(115200);
-  servo.write(0);
   th_sensor.begin();
 }
 
 void loop()
 {
-  
-  if (digitalRead(BUTTON_PIN) == HIGH)
-  {
-    Serial.println(calculateDistance(TRIG_PIN1, ECHO_PIN1));
-  }
 
-  temp = th_sensor.readTemperature();
-  humid = th_sensor.readHumidity();
-  light_level = analogRead(LIGHT_PIN);
-
-  Serial.print("Temp in Celsius: ");
-  Serial.println(temp);
-  Serial.print("Humidity Percent: ");
-  Serial.println(humid);
-  Serial.print("Light: ");
-  if (light_level < 2000)
+  if (digitalRead(TH_TOGGLE) == HIGH)
   {
-    Serial.println("LIGHT");
+    temp = th_sensor.readTemperature();
+    humid = th_sensor.readHumidity();
+    Serial.print("Temp in Celsius: ");
+    Serial.println(temp);
+    Serial.print("Humidity Percent: ");
+    Serial.println(humid);
   }
   else
   {
-    Serial.println("DARK");
+    Serial.println("NT&H");
+  }
+  if (digitalRead(LIGHT_TOGGLE) == HIGH)
+  {
+    light_level = analogRead(LIGHT_PIN);
+    Serial.print("Light: ");
+    if (light_level < 2000)
+    {
+      Serial.println("LIGHT");
+    }
+    else
+    {
+      Serial.println("DARK");
+    }
+  }
+  else
+  {
+    Serial.println("NL");
+  }
+  if (digitalRead(VOLUME_TOGGLE) == HIGH)
+  {
+    Serial.println(calculateVolume());
+  }
+  else
+  {
+    Serial.println("NV");
   }
 
   delay(2500);
